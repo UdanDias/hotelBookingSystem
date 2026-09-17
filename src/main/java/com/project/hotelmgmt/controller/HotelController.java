@@ -27,7 +27,7 @@ public class HotelController {
 
     @PatchMapping("updatehotel")
     public ResponseEntity<HotelDTO> updateHotel(@RequestParam("hotelId") String hotelId, @RequestBody HotelDTO hotelDTO){
-
+        System.out.println("dd");
         System.out.println(hotelDTO);
         return new ResponseEntity<HotelDTO>(HttpStatus.CREATED);
     }
