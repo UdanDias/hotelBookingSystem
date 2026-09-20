@@ -31,39 +31,27 @@ public class CustomerController {
     }
 
     @DeleteMapping("deletecustomer")
-    public ResponseEntity<Void> deleteCustomer(
-            @RequestParam("customerId") String customerId){
-
+    public ResponseEntity<Void> deleteCustomer(@RequestParam("customerId") String customerId){
         customerService.deleteCustomer(customerId);
-
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("updatecustomer")
-    public ResponseEntity<CustomerDTO> updateCustomer(
-            @RequestParam("customerId") String customerId,
-            @RequestBody CustomerDTO customerDTO){
-
+    public ResponseEntity<CustomerDTO> updateCustomer(@RequestParam("customerId") String customerId, @RequestBody CustomerDTO customerDTO){
         System.out.println(customerDTO);
         customerService.updateCustomer(customerId, customerDTO);
-
         return new ResponseEntity<CustomerDTO>(HttpStatus.OK);
     }
 
     @GetMapping("getselectedcustomer")
-    public ResponseEntity<CustomerDTO> getSelectedCustomer(
-            @RequestParam("customerid") String customerId){
-
+    public ResponseEntity<CustomerDTO> getSelectedCustomer(@RequestParam("customerid") String customerId){
         customerService.getSelectedCustomer(customerId);
-
         return ResponseEntity.ok(null);
     }
 
     @GetMapping("getallcustomers")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers(){
-
         customerService.getAllCustomers();
-
         return ResponseEntity.ok(null);
     }
 }

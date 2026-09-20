@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 
 public class UserController {
-
     private final UserService userService;
 
 
@@ -37,30 +36,21 @@ public class UserController {
     }
 
     @PatchMapping("updateuser")
-    public ResponseEntity<UserDTO> updateUser(
-            @RequestParam("userId") String userId,
-            @RequestBody UserDTO userDTO){
-
+    public ResponseEntity<UserDTO> updateUser(@RequestParam("userId") String userId, @RequestBody UserDTO userDTO){
         System.out.println(userDTO);
         userService.updateUser(userId, userDTO);
-
         return new ResponseEntity<UserDTO>(HttpStatus.OK);
     }
 
     @GetMapping("getselecteduser")
-    public ResponseEntity<UserDTO> getSelectedUser(
-            @RequestParam("userid") String userId){
-
+    public ResponseEntity<UserDTO> getSelectedUser(@RequestParam("userid") String userId){
         userService.getSelectedUser(userId);
-
         return ResponseEntity.ok(null);
     }
 
     @GetMapping("getallusers")
     public ResponseEntity<List<UserDTO>> getAllUsers(){
-
         userService.getAllUsers();
-
         return ResponseEntity.ok(null);
     }
 }

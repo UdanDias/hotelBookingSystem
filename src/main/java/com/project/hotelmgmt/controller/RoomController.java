@@ -37,30 +37,21 @@ public class RoomController {
     }
 
     @PatchMapping("updateroom")
-    public ResponseEntity<RoomDTO> updateRoom(
-            @RequestParam("roomId") String roomId,
-            @RequestBody RoomDTO roomDTO){
-
+    public ResponseEntity<RoomDTO> updateRoom(@RequestParam("roomId") String roomId, @RequestBody RoomDTO roomDTO){
         System.out.println(roomDTO);
         roomService.updateRoom(roomId, roomDTO);
-
         return new ResponseEntity<RoomDTO>(HttpStatus.OK);
     }
 
     @GetMapping("getselectedroom")
-    public ResponseEntity<RoomDTO> getSelectedRoom(
-            @RequestParam("roomid") String roomId){
-
+    public ResponseEntity<RoomDTO> getSelectedRoom(@RequestParam("roomid") String roomId){
         roomService.getSelectedRoom(roomId);
-
         return ResponseEntity.ok(null);
     }
 
     @GetMapping("getallrooms")
     public ResponseEntity<List<RoomDTO>> getAllRooms(){
-
         roomService.getAllRooms();
-
         return ResponseEntity.ok(null);
     }
 }
