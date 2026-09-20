@@ -5,7 +5,7 @@ import com.project.hotelmgmt.service.BookingService;
 
 import java.util.List;
 
-public class BookinServiceImpl implements BookingService {
+public class BookingServiceImpl implements BookingService {
     @Override
     public void addBooking(BookingDTO bookingDTO) {
         System.out.println("from Booking service addBooking method");
@@ -22,14 +22,14 @@ public class BookinServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDTO getSelectedBooking(String bookingID) {
+    public BookingDTO getSelectedBooking(String bookingId) {
         System.out.println("from Booking service getSelectedBooking method");
         return null;
     }
 
     @Override
     public List<BookingDTO> getAllBookings() {
-        System.out.println("from Booking service getAllBooking method");
+        System.out.println("from Booking service getAllBookings method");
         return List.of();
     }
 }
