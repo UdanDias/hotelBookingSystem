@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 
 public class RoomController {
-
     private final RoomService roomService;
 
 
