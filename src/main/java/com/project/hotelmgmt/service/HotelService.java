@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface HotelService {
     void addHotel(HotelDTO hotelDTO);
     void updateHotel(String hotelId, HotelDTO hotelDTO);

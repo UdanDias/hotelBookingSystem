@@ -2,18 +2,32 @@ package com.project.hotelmgmt.service.impl;
 
 import com.project.hotelmgmt.dto.BookingDTO;
 import com.project.hotelmgmt.service.BookingService;
+import com.project.hotelmgmt.util.UtilData;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Service
 
 public class BookingServiceImpl implements BookingService {
+
     @Override
     public void addBooking(BookingDTO bookingDTO) {
-        System.out.println("from Booking service addBooking method");
+        if (bookingDTO!=null){
+            bookingDTO.setBookingID(UtilData.generateBookingId());
+            //check whether the booking is available
+            bookingDTO.setIsBookingAvailable(true);
+            System.out.println(bookingDTO);
+        }
+//
+
     }
 
     @Override
     public void updateBooking(String bookingId, BookingDTO bookingDTO) {
-        System.out.println("from Booking service updateBooking method");
+//        System.out.println("from Booking service updateBooking method");
+
+
     }
 
     @Override

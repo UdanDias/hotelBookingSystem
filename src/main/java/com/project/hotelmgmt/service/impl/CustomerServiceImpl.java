@@ -2,9 +2,10 @@ package com.project.hotelmgmt.service.impl;
 
 import com.project.hotelmgmt.dto.CustomerDTO;
 import com.project.hotelmgmt.service.CustomerService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class CustomerServiceImpl implements CustomerService {
     @Override
     public void addCustomer(CustomerDTO customerDTO){

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface RoomService {
     void addRoom(RoomDTO roomDTO);
     void updateRoom(String roomId,RoomDTO roomDTO);

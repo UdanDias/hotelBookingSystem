@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface BookingService {
     void addBooking(BookingDTO bookingDTO);
     void updateBooking(String bookingId,BookingDTO bookingDTO);

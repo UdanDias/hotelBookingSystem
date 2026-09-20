@@ -2,9 +2,10 @@ package com.project.hotelmgmt.service.impl;
 
 import com.project.hotelmgmt.dto.HotelDTO;
 import com.project.hotelmgmt.service.HotelService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class HotelServiceImpl implements HotelService {
     @Override
     public void addHotel(HotelDTO hotelDTO){

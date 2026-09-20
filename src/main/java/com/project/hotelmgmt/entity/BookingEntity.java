@@ -1,21 +1,21 @@
-package com.project.hotelmgmt.dto;
+package com.project.hotelmgmt.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import java.sql.Time;
 import java.time.LocalDate;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-public class BookingDTO {
+@Entity
+public class BookingEntity {
+    @Id
     private String bookingID ;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private Time checkInTime;
     private Time checkOutTime;
     private Boolean isBookingAvailable;
+
+
 
 }

@@ -24,7 +24,7 @@ public class BookingController {
         return "Booking controller running";
     }
 
-    @PostMapping()
+    @PostMapping("addbooking")
     public ResponseEntity<Void> addBooking (@RequestBody BookingDTO bookingDTO){
         System.out.println(bookingDTO);
         bookingService.addBooking(bookingDTO);

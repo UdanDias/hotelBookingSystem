@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface UserService {
     void addUser(UserDTO userDTO);
     void updateUser(String userId,UserDTO userDTO);
