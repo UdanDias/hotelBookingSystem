@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class RoomDTO {
     private String roomId;
     private int roomNo;
-    private String hotelId;
     private String roomType;
     private boolean isRoomAvailable;
     private boolean isACAvailable;
