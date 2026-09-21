@@ -19,7 +19,6 @@ public class BookingServiceImpl implements BookingService {
             bookingDTO.setIsBookingAvailable(true);
             System.out.println(bookingDTO);
         }
-//
 
     }
 

@@ -1,25 +1,29 @@
 package com.project.hotelmgmt.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Table(name = "customer")
 public class CustomerEntity {
     @Id
     private String customerId;
     private String customerName;
     private String NIC;
-    private String roomId;// since customer frontend inputs
-    private String hotelId;
+    private int age;
+
 
     @OneToMany(mappedBy = "customer")
     private List<BookingEntity> bookings;
 
-    @OneToOne(mappedBy = "customer")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "user_id",nullable = false,unique = true)
     private UserEntity user;
 
 }
