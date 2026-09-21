@@ -1,7 +1,5 @@
 package com.project.hotelmgmt.entity;
-
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
