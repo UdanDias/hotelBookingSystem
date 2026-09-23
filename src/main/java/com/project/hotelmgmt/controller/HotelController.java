@@ -22,7 +22,7 @@ public class HotelController {
         return "Hotel controller running";
     }
 
-    @PostMapping()
+    @PostMapping("addhotel")
     public ResponseEntity<Void> addHotel(@RequestBody HotelDTO hotelDTO){
         System.out.println(hotelDTO);
         hotelService.addHotel(hotelDTO);
@@ -42,16 +42,16 @@ public class HotelController {
         return new ResponseEntity<HotelDTO>(HttpStatus.OK);
     }
 
-    @GetMapping("getSelectedHotel")
+    @GetMapping("getselectedhotel")
     public ResponseEntity<HotelDTO> getSelectedHotel(@RequestParam("hotelId") String hotelId){
-        hotelService.getSelectedHotel(hotelId);
-        return ResponseEntity.ok(null);
+        HotelDTO hotelDTO=hotelService.getSelectedHotel(hotelId);
+        return new ResponseEntity<>(hotelDTO,HttpStatus.OK);
     }
 
     @GetMapping("getallhotel")
     public ResponseEntity<List<HotelDTO>> getAllHotel(){
-        hotelService.getAllHotels();
-        return ResponseEntity.ok(null);
+        List<HotelDTO> hotelDTOS = hotelService.getAllHotels();
+        return ResponseEntity.ok(hotelDTOS);
     }
 }
 

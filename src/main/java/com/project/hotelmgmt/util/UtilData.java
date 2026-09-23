@@ -17,4 +17,8 @@ public class UtilData {
         String id= String.valueOf(UUID.randomUUID());
         return "B-"+id;
     }
+    public static String generateHotelId(){
+        String id= String.valueOf(UUID.randomUUID());
+        return "H-"+id;
+    }
 }

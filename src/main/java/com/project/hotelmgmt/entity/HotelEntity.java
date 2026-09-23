@@ -26,6 +26,7 @@ public class HotelEntity {
     private String phone ;
     private String location;
 
+
     @OneToMany(mappedBy = "hotel")
     private List<RoomEntity> rooms;
 
