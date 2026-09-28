@@ -22,21 +22,14 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void addRoom(RoomDTO roomDTO) {
         System.out.println("from room service addRoom method");
-
         roomDTO.setRoomId(UtilData.generateRoomId());
-
-        roomDao.save(
-                entityDTOConvert.convertRoomDTOToRoomEntity(roomDTO)
-        );
+        roomDao.save(entityDTOConvert.convertRoomDTOToRoomEntity(roomDTO));
     }
 
     @Override
     public void updateRoom(String roomId, RoomDTO roomDTO) {
         System.out.println("from room service updateRoom method");
-
-        RoomEntity roomEntity = roomDao.findById(roomId)
-                .orElseThrow(() ->
-                        new RoomNotFoundException("Room Not Found"));
+        RoomEntity roomEntity = roomDao.findById(roomId).orElseThrow(() -> new RoomNotFoundException("Room Not Found"));
 
         roomEntity.setRoomNo(roomDTO.getRoomNo());
         roomEntity.setRoomType(roomDTO.getRoomType());
@@ -51,33 +44,21 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void deleteRoom(String roomId) {
         System.out.println("from room service deleteRoom method");
-
-        RoomEntity roomEntity = roomDao.findById(roomId)
-                .orElseThrow(() ->
-                        new RoomNotFoundException("Room Not Found"));
-
+        RoomEntity roomEntity = roomDao.findById(roomId).orElseThrow(() -> new RoomNotFoundException("Room Not Found"));
         roomDao.delete(roomEntity);
     }
 
     @Override
     public RoomDTO getSelectedRoom(String roomId) {
         System.out.println("from room service getSelectedRoom method");
-
-        RoomEntity roomEntity = roomDao.findById(roomId)
-                .orElseThrow(() ->
-                        new RoomNotFoundException("Room Not Found"));
-
+        RoomEntity roomEntity = roomDao.findById(roomId).orElseThrow(() -> new RoomNotFoundException("Room Not Found"));
         return entityDTOConvert.convertRoomEntityToRoomDTO(roomEntity);
     }
 
     @Override
     public List<RoomDTO> getAllRooms() {
         System.out.println("from room service getAllRooms method");
-
         List<RoomEntity> roomEntityList = roomDao.findAll();
-
-        return entityDTOConvert.convertRoomEntityListToRoomDTOList(
-                roomEntityList
-        );
+        return entityDTOConvert.convertRoomEntityListToRoomDTOList(roomEntityList);
     }
 }
