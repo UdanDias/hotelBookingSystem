@@ -21,4 +21,16 @@ public class UtilData {
         String id= String.valueOf(UUID.randomUUID());
         return "H-"+id;
     }
+    public static String generateRoomId(){
+        String id= String.valueOf(UUID.randomUUID());
+        return "R-"+id;
+    }
+    public static String generateCustomerId(){
+        String id= String.valueOf(UUID.randomUUID());
+        return "C-"+id;
+    }
+    public static String generateUserId(){
+        String id= String.valueOf(UUID.randomUUID());
+        return "U-"+id;
+    }
 }
