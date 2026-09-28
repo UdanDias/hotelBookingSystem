@@ -23,7 +23,7 @@ public class UserEntity {
     private Role role;
 
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private CustomerEntity customer;
 }
 

@@ -3,7 +3,9 @@ package com.project.hotelmgmt.service.impl;
 import com.project.hotelmgmt.dao.CustomerDao;
 import com.project.hotelmgmt.dto.CustomerDTO;
 import com.project.hotelmgmt.dto.HotelDTO;
+import com.project.hotelmgmt.entity.BookingEntity;
 import com.project.hotelmgmt.entity.CustomerEntity;
+import com.project.hotelmgmt.exceptions.BookingsExistInHotelException;
 import com.project.hotelmgmt.exceptions.CustomerNotFoundException;
 import com.project.hotelmgmt.service.CustomerService;
 import com.project.hotelmgmt.util.EntityDTOConvert;
@@ -43,6 +45,10 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomer(String customerId) {
         System.out.println("from customer service deleteCustomer method");
         CustomerEntity customerEntity = customerDao.findById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer Not Found"));
+        List<BookingEntity> bookings=customerEntity.getBookings();
+        if (!bookings.isEmpty()){
+            throw new BookingsExistInHotelException("Customer cannot be deleted,Bookings Exists");
+        }
         customerDao.delete(customerEntity);
     }
 

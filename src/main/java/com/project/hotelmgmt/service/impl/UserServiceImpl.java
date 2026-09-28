@@ -2,7 +2,9 @@ package com.project.hotelmgmt.service.impl;
 
 import com.project.hotelmgmt.dao.UserDao;
 import com.project.hotelmgmt.dto.UserDTO;
+import com.project.hotelmgmt.entity.BookingEntity;
 import com.project.hotelmgmt.entity.UserEntity;
+import com.project.hotelmgmt.exceptions.BookingsExistInHotelException;
 import com.project.hotelmgmt.exceptions.UserNotFoundException;
 import com.project.hotelmgmt.service.UserService;
 import com.project.hotelmgmt.util.EntityDTOConvert;
@@ -43,6 +45,10 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String userId) {
         System.out.println("from user service deleteUser method");
         UserEntity userEntity = userDao.findById(userId).orElseThrow(() -> new UserNotFoundException("User Not Found"));
+        List<BookingEntity> bookings=userEntity.getCustomer().getBookings();
+        if (!bookings.isEmpty()){
+            throw new BookingsExistInHotelException("User cannot be deleted,Bookings Exists");
+        }
         userDao.delete(userEntity);
     }
 

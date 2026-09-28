@@ -19,7 +19,7 @@ public class CustomerEntity {
     private int age;
 
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<BookingEntity> bookings;
 
     @OneToOne(optional = false)

@@ -2,7 +2,9 @@ package com.project.hotelmgmt.service.impl;
 
 import com.project.hotelmgmt.dao.HotelDao;
 import com.project.hotelmgmt.dto.HotelDTO;
+import com.project.hotelmgmt.entity.BookingEntity;
 import com.project.hotelmgmt.entity.HotelEntity;
+import com.project.hotelmgmt.exceptions.BookingsExistInHotelException;
 import com.project.hotelmgmt.exceptions.HotelNotFoundException;
 import com.project.hotelmgmt.service.HotelService;
 import com.project.hotelmgmt.util.EntityDTOConvert;
@@ -10,6 +12,7 @@ import com.project.hotelmgmt.util.UtilData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -21,7 +24,6 @@ public class HotelServiceImpl implements HotelService {
         System.out.println("from hotel service addHotel method");
         hotelDTO.setHotelId(UtilData.generateHotelId());
         hotelDao.save(entityDTOConvert.convertHotelDTOToHotelEntity(hotelDTO));
-
     }
 
     @Override
@@ -42,6 +44,11 @@ public class HotelServiceImpl implements HotelService {
     public void deleteHotel(String hotelId){
         System.out.println("from hotel service deleteHotel method");
         HotelEntity hotelEntity=hotelDao.findById(hotelId).orElseThrow(()->new HotelNotFoundException("Hotel Not Found"));
+
+        List<BookingEntity> bookings=hotelEntity.getBookings();
+        if (!bookings.isEmpty()){
+            throw new BookingsExistInHotelException("Hotel cannot be deleted,Bookings Exists");
+        }
         hotelDao.delete(hotelEntity);
     }
 

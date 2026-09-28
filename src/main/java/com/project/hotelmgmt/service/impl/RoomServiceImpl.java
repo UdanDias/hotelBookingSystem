@@ -2,7 +2,9 @@ package com.project.hotelmgmt.service.impl;
 
 import com.project.hotelmgmt.dao.RoomDao;
 import com.project.hotelmgmt.dto.RoomDTO;
+import com.project.hotelmgmt.entity.BookingEntity;
 import com.project.hotelmgmt.entity.RoomEntity;
+import com.project.hotelmgmt.exceptions.BookingExistsInRoomException;
 import com.project.hotelmgmt.exceptions.RoomNotFoundException;
 import com.project.hotelmgmt.service.RoomService;
 import com.project.hotelmgmt.util.EntityDTOConvert;
@@ -23,6 +25,7 @@ public class RoomServiceImpl implements RoomService {
     public void addRoom(RoomDTO roomDTO) {
         System.out.println("from room service addRoom method");
         roomDTO.setRoomId(UtilData.generateRoomId());
+        roomDTO.setRoomAvailable(true);
         roomDao.save(entityDTOConvert.convertRoomDTOToRoomEntity(roomDTO));
     }
 
@@ -45,6 +48,12 @@ public class RoomServiceImpl implements RoomService {
     public void deleteRoom(String roomId) {
         System.out.println("from room service deleteRoom method");
         RoomEntity roomEntity = roomDao.findById(roomId).orElseThrow(() -> new RoomNotFoundException("Room Not Found"));
+
+        List<BookingEntity> bookingEntities=roomEntity.getBookings();
+
+        if (bookingEntities !=null && !bookingEntities.isEmpty()){
+            throw new BookingExistsInRoomException("Room cannot be deleted,Bookings Exists");
+        }
         roomDao.delete(roomEntity);
     }
 

@@ -1,9 +1,6 @@
 package com.project.hotelmgmt.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,9 +24,9 @@ public class HotelEntity {
     private String location;
 
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<RoomEntity> rooms;
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<BookingEntity> bookings;
 }
