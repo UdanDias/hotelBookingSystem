@@ -1,5 +1,6 @@
 package com.project.hotelmgmt.entity;
 
+import com.project.hotelmgmt.dto.RoomType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,11 +19,11 @@ public class RoomEntity {
     @Id
     private String roomId;
     private int roomNo;
-    private String roomType;
+    @Enumerated(EnumType.STRING)
+    private RoomType roomType;
     private boolean isRoomAvailable;
-    private boolean isACAvailable;
-    private boolean isTvAvailable;
     private int roomSize;
+    private double price;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "hotel_id",nullable = false)

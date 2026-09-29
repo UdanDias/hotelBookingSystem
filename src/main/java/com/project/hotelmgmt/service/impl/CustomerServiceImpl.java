@@ -27,8 +27,11 @@ public class CustomerServiceImpl implements CustomerService {
     public void addCustomer(CustomerDTO customerDTO) {
         System.out.println("from customer service addCustomer method");
         customerDTO.setCustomerId(UtilData.generateCustomerId());
-        if(customerDTO.getAge()<18){
-            throw new CustomerAgeException("Customer age must be above 18. Booking canceled");
+        int age=UtilData.calcAge(customerDTO.getDob());
+        if (age>18){
+            customerDTO.setAge(age);
+        }else{
+            throw new CustomerAgeException("Customer has to be older than 18 years");
         }
         customerDao.save(entityDTOConvert.convertCustomerDTOToCustomerEntity(customerDTO));
     }
@@ -40,7 +43,13 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerEntity.setCustomerName(customerDTO.getCustomerName());
         customerEntity.setNIC(customerDTO.getNIC());
-        customerEntity.setAge(customerDTO.getAge());
+        customerEntity.setDob(customerDTO.getDob());
+        int age=UtilData.calcAge(customerDTO.getDob());
+        if (age>18){
+            customerEntity.setAge(age);
+        }else{
+            throw new CustomerAgeException("Customer has to be older than 18 years");
+        }
 
         customerDao.save(customerEntity);
     }

@@ -3,6 +3,7 @@ package com.project.hotelmgmt.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,7 @@ public class CustomerEntity {
     private String customerId;
     private String customerName;
     private String NIC;
+    private LocalDate dob;
     private int age;
 
 

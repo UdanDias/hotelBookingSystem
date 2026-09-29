@@ -11,7 +11,10 @@ import com.project.hotelmgmt.util.UtilData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 
@@ -24,7 +27,13 @@ public class BookingServiceImpl implements BookingService {
     public void addBooking(BookingDTO bookingDTO) {
         if (bookingDTO!=null){
             bookingDTO.setBookingID(UtilData.generateBookingId());
-            //check whether the booking is available
+            //check whether the room is available
+            Map<String,Integer> roomTypes = new HashMap<>();
+            roomTypes=bookingDao.getCountByRoomType();
+
+            for ( Map.Entry<String,Integer> entry:roomTypes.entrySet()){
+                bookingDTO.getRoomType().entrySet().contains(entry.getKey())
+            }
             bookingDTO.setIsBookingAvailable(true);
             System.out.println(bookingDTO);
 //call the addCustomer method

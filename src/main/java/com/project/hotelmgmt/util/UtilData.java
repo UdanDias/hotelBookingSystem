@@ -3,6 +3,7 @@ package com.project.hotelmgmt.util;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.UUID;
@@ -11,6 +12,10 @@ public class UtilData {
 
     public static LocalDate generateTodayDate(){
         return LocalDate.now();
+    }
+    public static int calcAge(LocalDate dob){
+        LocalDate today=generateTodayDate();
+        return Period.between(dob,today).getYears();
     }
 
     public static String generateBookingId(){

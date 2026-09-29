@@ -8,6 +8,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +21,9 @@ public class BookingDTO {
     private LocalTime checkOutTime;
     private Boolean isBookingAvailable;
     private String hotelId;
-    private List<RoomDTO> rooms;
+    private Map<String,Integer> roomType;
+
+
+
 
 }
