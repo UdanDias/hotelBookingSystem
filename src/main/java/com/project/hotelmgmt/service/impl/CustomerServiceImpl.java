@@ -6,6 +6,7 @@ import com.project.hotelmgmt.dto.HotelDTO;
 import com.project.hotelmgmt.entity.BookingEntity;
 import com.project.hotelmgmt.entity.CustomerEntity;
 import com.project.hotelmgmt.exceptions.BookingsExistInHotelException;
+import com.project.hotelmgmt.exceptions.CustomerAgeException;
 import com.project.hotelmgmt.exceptions.CustomerNotFoundException;
 import com.project.hotelmgmt.service.CustomerService;
 import com.project.hotelmgmt.util.EntityDTOConvert;
@@ -26,6 +27,9 @@ public class CustomerServiceImpl implements CustomerService {
     public void addCustomer(CustomerDTO customerDTO) {
         System.out.println("from customer service addCustomer method");
         customerDTO.setCustomerId(UtilData.generateCustomerId());
+        if(customerDTO.getAge()<18){
+            throw new CustomerAgeException("Customer age must be above 18. Booking canceled");
+        }
         customerDao.save(entityDTOConvert.convertCustomerDTOToCustomerEntity(customerDTO));
     }
 

@@ -2,6 +2,7 @@ package com.project.hotelmgmt.service.impl;
 
 import com.project.hotelmgmt.dao.BookingDao;
 import com.project.hotelmgmt.dto.BookingDTO;
+import com.project.hotelmgmt.dto.CustomerDTO;
 import com.project.hotelmgmt.entity.BookingEntity;
 import com.project.hotelmgmt.exceptions.BookingNotFoundException;
 import com.project.hotelmgmt.service.BookingService;
@@ -17,6 +18,7 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
     private final BookingDao bookingDao;
     private final EntityDTOConvert entityDTOConvert;
+    private final CustomerServiceImpl customerServiceImpl;
 
     @Override
     public void addBooking(BookingDTO bookingDTO) {
@@ -26,7 +28,9 @@ public class BookingServiceImpl implements BookingService {
             bookingDTO.setIsBookingAvailable(true);
             System.out.println(bookingDTO);
 //call the addCustomer method
-            //check customer age
+          /*  CustomerDTO customerDTO;
+            customerServiceImpl.addCustomer(customerDTO);*/
+            
 
         }
 
