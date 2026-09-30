@@ -5,6 +5,7 @@ import com.project.hotelmgmt.dto.BookingDTO;
 import com.project.hotelmgmt.dto.CustomerDTO;
 import com.project.hotelmgmt.entity.BookingEntity;
 import com.project.hotelmgmt.exceptions.BookingNotFoundException;
+import com.project.hotelmgmt.exceptions.RequirementsUnavailableException;
 import com.project.hotelmgmt.service.BookingService;
 import com.project.hotelmgmt.util.EntityDTOConvert;
 import com.project.hotelmgmt.util.UtilData;
@@ -25,17 +26,30 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void addBooking(BookingDTO bookingDTO) {
+        int requirementsFulfilled=0;
         if (bookingDTO!=null){
             bookingDTO.setBookingID(UtilData.generateBookingId());
             //check whether the room is available
-            Map<String,Integer> roomTypes = new HashMap<>();
-            roomTypes=bookingDao.getCountByRoomType();
+            Map<String,Integer> available=bookingDao.getCountByRoomType();
+            for (Map.Entry<String,Integer> DTOentry:bookingDTO.getRoomType().entrySet()){
 
-            for ( Map.Entry<String,Integer> entry:roomTypes.entrySet()){
-                bookingDTO.getRoomType().entrySet().contains(entry.getKey())
+                for ( Map.Entry<String,Integer> entry:available.entrySet()){
+                    if (DTOentry.getKey().contentEquals(entry.getKey())){
+                        if (DTOentry.getValue()<= entry.getValue()){
+                            System.out.println(DTOentry.getValue().toString()+DTOentry.getKey().toString()+"sized Beds available");
+                            requirementsFulfilled++;
+                        }else {
+                            throw new RequirementsUnavailableException("not enough"+DTOentry.getKey().toString()+"sized beds available");
+                        }
+                        break;
+                    }
+                }
             }
-            bookingDTO.setIsBookingAvailable(true);
+            if (requirementsFulfilled==bookingDTO.getRoomType().entrySet().toArray().length){
+                bookingDTO.setIsBookingAvailable(true);
+            }
             System.out.println(bookingDTO);
+            bookingDao.save(entityDTOConvert.convertBookingDTOToBookingEntity(bookingDTO));
 //call the addCustomer method
           /*  CustomerDTO customerDTO;
             customerServiceImpl.addCustomer(customerDTO);*/
