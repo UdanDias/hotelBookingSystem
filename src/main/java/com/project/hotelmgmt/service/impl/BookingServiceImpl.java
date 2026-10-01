@@ -28,12 +28,29 @@ public class BookingServiceImpl implements BookingService {
         if (bookingDTO!=null){
             bookingDTO.setBookingID(UtilData.generateBookingId());
             //check whether the room is available
-            Map<String,Integer> roomTypes = new HashMap<>();
+            Map<String,Long> roomTypes = new HashMap<>();
             roomTypes=bookingDao.getCountByRoomType();
+            //roomTypes.get()
+            for(String x:bookingDTO.getRoomType().keySet()){
+                if(bookingDTO.getRoomType().get(x) == null ){
+                    continue;
+                }
 
+                if((long)bookingDTO.getRoomType().get(x)>roomTypes.get(x)){
+                    System.out.println("Insufficient amount of room.");
+                    return;
+                }
+                System.out.println("Rooms are available.");
+            }
+            for(String x:bookingDTO.getRoomType().keySet()) {
+
+
+            }
+
+        /*
             for ( Map.Entry<String,Integer> entry:roomTypes.entrySet()){
                 bookingDTO.getRoomType().entrySet().contains(entry.getKey())
-            }
+            }*/
             bookingDTO.setIsBookingAvailable(true);
             System.out.println(bookingDTO);
 //call the addCustomer method

@@ -20,4 +20,5 @@ public interface RoomDao extends JpaRepository<RoomEntity,String> {
 //    )
 //""")
 //    List<BookingEntity> getBookingsByRoomID(@Param("roomId") String roomId);
+
 }

@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface BookingDao extends JpaRepository< BookingEntity,String> {
-    @Query("SELECT r.roomType, COUNT(r) from RoomEntity r GROUP BY r.roomType")
-    Map<String,Integer> getCountByRoomType();
+    @Query("SELECT r.roomType, COUNT(r) from RoomEntity r WHERE r.isRoomAvailable =true GROUP BY r.roomType")
+    Map<String,Long> getCountByRoomType();
 }
