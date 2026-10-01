@@ -19,7 +19,7 @@ public class BookingDTO {
     private LocalDate checkOutDate;
     private LocalTime checkInTime;
     private LocalTime checkOutTime;
-    private Boolean isBookingAvailable;
+    private Boolean isBookingAvailable=false;
     private String hotelId;
     private Map<String,Integer> roomType;
 
