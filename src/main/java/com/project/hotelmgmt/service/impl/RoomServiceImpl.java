@@ -12,6 +12,7 @@ import com.project.hotelmgmt.util.UtilData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -68,5 +69,36 @@ public class RoomServiceImpl implements RoomService {
         System.out.println("from room service getAllRooms method");
         List<RoomEntity> roomEntityList = roomDao.findAll();
         return entityDTOConvert.convertRoomEntityListToRoomDTOList(roomEntityList);
+    }
+
+    @Override
+    public void updateRoomAvailability() {
+
+        List<RoomEntity> rooms = roomDao.findAll();
+
+        LocalDate today = LocalDate.now();
+
+        for (RoomEntity room : rooms) {
+
+            boolean hasActiveBooking = false;
+
+            List<BookingEntity> bookings = room.getBookings();
+
+            if (bookings != null) {
+
+                for (BookingEntity booking : bookings) {
+
+                    if (!booking.getCheckOutDate().isBefore(today)) {
+                        hasActiveBooking = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasActiveBooking) {
+                room.setRoomAvailable(true);
+                roomDao.save(room);
+            }
+        }
     }
 }

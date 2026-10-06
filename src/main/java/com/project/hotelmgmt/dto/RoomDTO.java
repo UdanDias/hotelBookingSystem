@@ -14,4 +14,6 @@ public class RoomDTO {
     private boolean isRoomAvailable;
     private int roomSize;
     private double price;
+    private String hotelId;
+
 }
