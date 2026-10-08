@@ -1,6 +1,7 @@
 package com.project.hotelmgmt.controller;
 
 import com.project.hotelmgmt.dto.BookingDTO;
+import com.project.hotelmgmt.exceptions.BookingNotFoundException;
 import com.project.hotelmgmt.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,9 +27,22 @@ public class BookingController {
 
     @PostMapping("addbooking")
     public ResponseEntity<Void> addBooking (@RequestBody BookingDTO bookingDTO){
-        System.out.println(bookingDTO);
-        bookingService.addBooking(bookingDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+
+        if ((bookingDTO==null)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            System.out.println(bookingDTO);
+            bookingService.addBooking(bookingDTO);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (BookingNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
     @DeleteMapping("deletebooking")
     public ResponseEntity<Void> deleteBooking(@RequestParam("bookingId") String bookingId){
