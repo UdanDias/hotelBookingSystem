@@ -22,6 +22,10 @@ public class BookingDTO {
     private Boolean isBookingAvailable=false;
     private String hotelId;
     private Map<String,Integer> roomType;
+    private List<String> roomList;
+    private String hotelName;
+
+
 
 
 

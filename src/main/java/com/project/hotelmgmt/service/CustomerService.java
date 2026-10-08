@@ -1,7 +1,6 @@
 package com.project.hotelmgmt.service;
 
 import com.project.hotelmgmt.dto.CustomerDTO;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
