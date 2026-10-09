@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,7 +57,6 @@ public class BookingServiceImpl implements BookingService {
                     roomDao.save(room);
                 }
                 bookingDao.save(booking);
-                // free the room
             }
         }
     }
@@ -69,7 +69,7 @@ public class BookingServiceImpl implements BookingService {
             if(bookingDTO.getCheckInDate().isBefore(UtilData.generateTodayDate())){
                 throw new RequirementsUnavailableException("Checking date must be after the current date.");
             }
-            bookingDTO.setBookingID(UtilData.generateBookingId());
+
             //check whether the room is available
             Map<String,Long> roomTypes_Count= new HashMap<>();
             roomTypes_Count=bookingDao.getCountByRoomType(bookingDTO.getHotelId());
@@ -86,6 +86,8 @@ public class BookingServiceImpl implements BookingService {
                 }
             }
             System.out.println("Rooms are available.");
+
+            bookingDTO.setBookingID(UtilData.generateBookingId());
 
             List<RoomEntity> selectedRooms = new ArrayList<>();
 
@@ -157,8 +159,15 @@ bookingEntity.setCustomer(customer);
         System.out.println("from booking service updateBooking method");
         BookingEntity bookingEntity = bookingDao.findById(bookingID).orElseThrow(() -> new BookingNotFoundException("Booking Not Found"));
 
-        if(bookingDTO.getCheckInDate().isBefore(UtilData.generateTodayDate())) {
-            throw new RequirementsUnavailableException("Checking date must be after the current date.");
+        if(bookingEntity.getCheckOutDate().isBefore(UtilData.generateTodayDate())){
+            throw new RequirementsUnavailableException("CheckOut date must be after the current date to update the booking");
+
+        }
+
+        if(!(bookingEntity.getCheckInDate().isBefore(UtilData.generateTodayDate()) && bookingEntity.getCheckOutDate().isAfter(UtilData.generateTodayDate()))){
+            if (bookingDTO.getCheckInDate().isBefore(UtilData.generateTodayDate())) {
+                throw new RequirementsUnavailableException("Checking date must be after the current date.");
+            }
         }
         bookingEntity.setCheckInDate(bookingDTO.getCheckInDate());
         bookingEntity.setCheckOutDate(bookingDTO.getCheckOutDate());
@@ -166,13 +175,64 @@ bookingEntity.setCustomer(customer);
         bookingEntity.setCheckOutTime(bookingDTO.getCheckOutTime());
         bookingEntity.setIsBookingAvailable(bookingDTO.getIsBookingAvailable());
 
+        List<RoomEntity> roomset = new ArrayList<>();
 
-        Map<String ,Integer> roomTypes = new HashMap<>();
-        roomTypes = bookingDTO.getRoomType();
-        List<RoomEntity> selectedRooms = new ArrayList<>();
+        Map<String ,Integer> roomTypeNew = new HashMap<>();
+        roomTypeNew = bookingDTO.getRoomType();
 
-        if(bookingDTO.getHotelId() ==  bookingEntity.getHotel().getHotelId()){
+        for(String roomType:roomTypeNew.keySet()){
+            if(roomTypeNew.get(roomType) == null || roomTypeNew.get(roomType) == 0){
+                continue;
+            }
 
+            roomset =bookingDao.roomByHotelAndRoomType(bookingDTO.getHotelId(),roomType);
+
+            if((long)roomTypeNew.get(roomType)> roomset.size()){
+                System.out.println("Insufficient amount of room.");
+                return;
+            }
+        }
+        System.out.println("Rooms are available.");
+
+
+        List<RoomEntity> updatedRoomList = new ArrayList<>();
+        List<RoomEntity> existingRoomList = bookingEntity.getRooms();
+
+        if(bookingDTO.getHotelId().equals(bookingEntity.getHotel().getHotelId())){
+            //roomTypeNew=new map
+            for (Map.Entry<String,Integer> entry :roomTypeNew.entrySet()) {
+                String roomType = entry.getKey();
+                int requestedCount = entry.getValue();
+
+                List<RoomEntity> existingRoomSubListOfType = existingRoomList.stream()
+                        .filter(roomEntity -> roomEntity.getRoomType().name().equals(roomType))
+                        .collect(Collectors.toList());
+
+                int existingCount = existingRoomList.size();
+
+                if (requestedCount <= existingCount) {
+                    updatedRoomList.addAll(existingRoomSubListOfType.subList(0,requestedCount));
+
+                    for(int i=requestedCount;requestedCount<existingCount;i++){
+                        RoomEntity roomEntity =existingRoomSubListOfType.get(i);
+                        roomEntity.setRoomAvailable(true);
+                        roomDao.save(roomEntity);
+                    }
+                }else{
+                    updatedRoomList.addAll(existingRoomSubListOfType);
+
+                    int additionalCount =requestedCount - existingCount;
+                    roomset =bookingDao.roomByHotelAndRoomType(bookingDTO.getHotelId(),roomType);
+
+                    for(int i=0; i<additionalCount;i++){
+                        RoomEntity roomEntity =roomset.get(i);
+                        roomEntity.setRoomAvailable(false);
+                        roomDao.save(roomEntity);
+                        updatedRoomList.add(roomEntity);
+                    }
+                }
+
+            }
         }else{
             List<RoomEntity> rooms = bookingEntity.getRooms();
             for(RoomEntity room :rooms) {
@@ -180,22 +240,18 @@ bookingEntity.setCustomer(customer);
                 roomDao.save(room);
             }
 
-            for(String roomType : roomTypes.keySet()){
-               List<RoomEntity> roomset = new ArrayList<>();
+            for(String roomType : roomTypeNew.keySet()){
                roomset =bookingDao.roomByHotelAndRoomType(bookingDTO.getHotelId(),roomType);
 
-                    for(int i =0; i<roomTypes.get(roomType);i++){
+                    for(int i =0; i<roomTypeNew.get(roomType);i++){
                         RoomEntity roomEntity =roomset.get(i);
                         roomEntity.setRoomAvailable(false);
                         roomDao.save(roomEntity);
-                        selectedRooms.add(roomEntity);
+                        updatedRoomList.add(roomEntity);
                     }
                 }
-            bookingEntity.setRooms(selectedRooms);
-
             }
-
-
+        bookingEntity.setRooms(updatedRoomList);
         bookingDao.save(bookingEntity);
             }
 
@@ -210,14 +266,14 @@ bookingEntity.setCustomer(customer);
                 () -> new BookingNotFoundException("Booking Not Found")
         );
 
+        bookingDao.save(bookingEntity);
+        bookingDao.delete(bookingEntity);
+
         List<RoomEntity> rooms = bookingEntity.getRooms();
         for(RoomEntity room :rooms) {
             room.setRoomAvailable(true);
             roomDao.save(room);
         }
-        bookingDao.save(bookingEntity);
-
-        bookingDao.delete(bookingEntity);
     }
 
     @Override
