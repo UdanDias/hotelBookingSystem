@@ -36,7 +36,7 @@ public class RoomServiceImpl implements RoomService {
         RoomEntity roomEntity = roomDao.findById(roomId).orElseThrow(() -> new RoomNotFoundException("Room Not Found"));
 
         roomEntity.setRoomNo(roomDTO.getRoomNo());
-        roomEntity.setRoomType(roomDTO.getRoomType().toString());
+        roomEntity.setRoomType(roomDTO.getRoomType());
         roomEntity.setRoomAvailable(roomDTO.isRoomAvailable());
         roomEntity.setRoomSize(roomDTO.getRoomSize());
         roomEntity.setPrice(roomDTO.getPrice());

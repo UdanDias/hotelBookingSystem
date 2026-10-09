@@ -154,14 +154,15 @@ bookingEntity.setCustomer(customer);
         return customerDao.save(customerEntity);
     }*/
 
+
+//add Authorize for admin for changing past bookings to override current date limitations
+
     @Override
     public void updateBooking(String bookingID, BookingDTO bookingDTO) {
         System.out.println("from booking service updateBooking method");
         BookingEntity bookingEntity = bookingDao.findById(bookingID).orElseThrow(() -> new BookingNotFoundException("Booking Not Found"));
-
         if(bookingEntity.getCheckOutDate().isBefore(UtilData.generateTodayDate())){
             throw new RequirementsUnavailableException("CheckOut date must be after the current date to update the booking");
-
         }
 
         if(!(bookingEntity.getCheckInDate().isBefore(UtilData.generateTodayDate()) && bookingEntity.getCheckOutDate().isAfter(UtilData.generateTodayDate()))){
